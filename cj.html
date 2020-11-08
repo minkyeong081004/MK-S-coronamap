@@ -1,0 +1,94 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>다음 지도 API</title>
+</head>
+<body>
+	<div id="map" style="width:100%;height:100vh;"></div>
+
+	<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=349f53e7dd77bd4846dcaa9ccd65e2da&libraries=clusterer"></script>
+	<script>
+    		var mapContainer = document.getElementById('map'), 
+		    mapOption = {
+		        center: new kakao.maps.LatLng(36.962357, 127.870740),
+		        level: 8, 
+		        mapTypeId : kakao.maps.MapTypeId.ROADMAP 
+		    }; 
+
+    		var map = new kakao.maps.Map(mapContainer, mapOption); 
+        
+
+            var clusterer=new kakao.maps.MarkerClusterer({
+            map:map,
+            averageCenter:true,
+            minLevel:6
+        });
+        
+        
+            var dt=[ 
+            [36.973566, 127.932451,'<div style="padding:5px">충주22번 확진자(10.19)</div>'],
+            [36.974363, 127.963107,'<div style="padding:5px">충주21번 확진자(10.19)</div>'],
+            [36.978270, 127.818701,'<div style="padding:5px">충주19번 확진자(8.29)</div>'],
+            [36.977919, 127.817939,'<div style="padding:5px">충주18번 확진자(8.29)</div>'],
+            [36.973177, 127.948672,'<div style="padding:5px">충주17번 확진자(8.22)</div>'],
+            [36.968382, 127.932529,'<div style="padding:5px">충주16번 확진자(8.21)</div>'],
+            [36.967150, 127.939933,'<div style="padding:5px">충주15번 확진자(8.16)</div>'],
+            [36.964363, 127.938721 ,'<div style="padding:5px">충주14번 확진자(8.16)</div>'],
+            [36.905364, 127.964726,'<div style="padding:5px">충주13번 확진자(5.7)</div>'],
+            [37.011769, 127.915776,'<div style="padding:5px">충주12번 확진자(4.2)</div>'],
+            [37.010333, 127.824042,'<div style="padding:5px">충주11번 확진자(3.29)</div>'],
+            [37.042856, 127.925104 ,'<div style="padding:5px">충주10번 확진자(3.22)</div>'],
+            [36.956223, 127.938655,'<div style="padding:5px">충주9번 확진자(3.22)</div>'],
+            [37.043147, 127.924510,'<div style="padding:5px">충주8번 확진자(3.21)</div>'],
+            [37.017719, 127.864512 ,'<div style="padding:5px">충주7번 확진자(3.19)</div>'],
+            [36.982077, 127.915762,'<div style="padding:5px">충주6번 확진자(3.18)</div>'],
+            [36.990498, 127.938902,'<div style="padding:5px">충주5번 확진자(3.17)</div>'],
+            [36.986698, 127.934018 ,'<div style="padding:5px">충주4번 확진자(3.9)</div>'],
+            [37.013126, 127.917728 ,'<div style="padding:5px">충주3번 확진자(2.27)</div>'],
+            [37.012119, 127.916962 ,'<div style="padding:5px">충주2번 확진자(2.26)</div>'],
+            [37.025697, 127.859644 ,'<div style="padding:5px">충주1번 확진자(2.25)</div>']
+            
+            
+            
+        ]
+        
+            var markers=[];
+        
+           for(var i=0; i<dt.length; i++){
+                var marker=new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(dt[i][0],dt[i][1]),
+                    map:map
+                });
+            
+           var iwContent='<div style="padding:5px">내용</div>';
+       
+           var infowindow=new kakao.maps.InfoWindow({
+            content:dt[i][2]
+        });
+            
+        infowindow.open(map,marker);
+        markers.push(marker);
+
+    kakao.maps.event.addListener(marker,'mouseover',makeOverListener(map,marker,infowindow)); kakao.maps.event.addListener(marker,'mouseout',makeOutListener(infowindow));
+        }
+        
+        clusterer.addMarkers(markers);
+        
+        function makeOverListener(map,marker,infowindow){
+            return function(){
+                infowindow.open(map,marker);
+            };
+        }
+        
+        function makeOutListener(infowindow){
+            return function(){
+                infowindow.close();
+            };
+        }
+        
+        
+        
+
+	</script>
+</body>
+</html>
